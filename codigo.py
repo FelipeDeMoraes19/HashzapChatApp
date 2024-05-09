@@ -21,4 +21,11 @@ def main(pagina):
 
     pagina.pubsub.subscribe(enviar_mensagem_tunel)
 
-    
+    def enviar_mensagem(evento):
+        pagina.pubsub.send_all({"texto": campo_mensagem.value, "usuario": nome_usuario.value,
+        "tipo": "mensagem"})
+        campo_mensagem.value = ""
+        pagina.update()
+
+    campo_mensagem = ft.TextField(label="Digite uma mensagem", on_submit=enviar_mensagem)
+    botao_enviar_mensagem = ft.ElevatedButton("Enviar", on_click=enviar_mensagem)
