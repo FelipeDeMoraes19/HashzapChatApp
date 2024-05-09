@@ -29,3 +29,22 @@ def main(pagina):
 
     campo_mensagem = ft.TextField(label="Digite uma mensagem", on_submit=enviar_mensagem)
     botao_enviar_mensagem = ft.ElevatedButton("Enviar", on_click=enviar_mensagem)
+
+    def entrar_popup(evento):
+        pagina.pubsub.send_all({"usuario": nome_usuario.value, "tipo": "entrada"})
+        pagina.add(chat)
+        popup.open = False
+        pagina.remove(botao_iniciar)
+        pagina.remove(texto)
+        pagina.add(ft.Row(
+            [campo_mensagem, botao_enviar_mensagem]
+        ))
+        pagina.update()
+
+    popup = ft.AlertDialog(
+        open=False, 
+        modal=True,
+        title=ft.Text("Bem vindo ao Hashzap"),
+        content=nome_usuario,
+        actions=[ft.ElevatedButton("Entrar", on_click=entrar_popup)],
+        )
